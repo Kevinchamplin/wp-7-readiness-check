@@ -683,6 +683,54 @@
 .wp7rc-footer__meta a { color: var(--wp7rc-accent); text-decoration: none; }
 .wp7rc-footer__meta a:hover { text-decoration: underline; }
 
+.wp7rc-star-band {
+  grid-column: 1 / -1;
+  margin-top: 18px;
+  padding: 16px 22px;
+  background: linear-gradient(135deg, rgba(234,179,8,.08), rgba(139,92,246,.04));
+  border: 1px solid rgba(234,179,8,.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 13.5px;
+}
+.wp7rc-star-band > span:first-child {
+  font-weight: 600;
+  color: var(--wp7rc-ink);
+}
+.wp7rc-star-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #fef3c7;
+  color: #78350f;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid #fcd34d;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.wp7rc-star-link:hover {
+  background: #fde68a;
+  color: #78350f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(234,179,8,.25);
+}
+.wp7rc-star-icon {
+  color: #ca8a04;
+  font-size: 16px;
+  line-height: 1;
+}
+.wp7rc-star-note {
+  color: var(--wp7rc-muted);
+  font-size: 12px;
+  font-style: italic;
+}
+
 /* ====================== PRINT ====================== */
 @media print {
   @page {

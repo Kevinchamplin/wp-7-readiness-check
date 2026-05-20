@@ -284,10 +284,19 @@ $dash = (int) round($circ * ($score / 100));
       <a class="wp7rc-btn wp7rc-btn--ghost" href="<?= esc_url(WP7RC_ENGAGEMENT_URL); ?>" target="_blank" rel="noopener">Apply for an engagement &rarr;</a>
     </div>
 
+    <div class="wp7rc-star-band">
+      <span>Find this plugin useful?</span>
+      <a class="wp7rc-star-link" href="<?= esc_url(WP7RC_GITHUB_URL); ?>" target="_blank" rel="noopener">
+        <span class="wp7rc-star-icon" aria-hidden="true">★</span> Star us on GitHub
+      </a>
+      <span class="wp7rc-star-note">No telemetry, no signup &mdash; a star is the only way we hear from you.</span>
+    </div>
+
     <p class="wp7rc-footer__meta">
       Audit generated <?= esc_html((string) ($results['generated_at'] ?? '')); ?> &middot;
       WP 7 Readiness Check v<?= esc_html(WP7RC_VERSION); ?> &middot;
-      <a href="https://champlinenterprises.com" target="_blank" rel="noopener">Champlin Enterprises</a>
+      <a href="https://champlinenterprises.com?utm_source=plugin&amp;utm_medium=admin&amp;utm_campaign=wp7rc" target="_blank" rel="noopener">Champlin Enterprises</a> &middot;
+      <a href="<?= esc_url(WP7RC_LANDING_URL); ?>" target="_blank" rel="noopener">Plugin homepage</a>
     </p>
   </footer>
 

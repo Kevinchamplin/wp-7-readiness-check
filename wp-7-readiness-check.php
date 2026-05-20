@@ -25,8 +25,10 @@ define('WP7RC_VERSION', '1.0.0');
 define('WP7RC_FILE', __FILE__);
 define('WP7RC_DIR', plugin_dir_path(__FILE__));
 define('WP7RC_URL', plugin_dir_url(__FILE__));
-define('WP7RC_PRINTABLE_URL', 'https://champlinenterprises.com/wordpress-7-0-readiness-checklist.html');
-define('WP7RC_ENGAGEMENT_URL', 'https://champlinenterprises.com/contact');
+define('WP7RC_PRINTABLE_URL', 'https://champlinenterprises.com/wordpress-7-0-readiness-checklist.html?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
+define('WP7RC_ENGAGEMENT_URL', 'https://champlinenterprises.com/contact?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
+define('WP7RC_LANDING_URL',    'https://champlinenterprises.com/wp-7-readiness-plugin.html?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
+define('WP7RC_GITHUB_URL',     'https://github.com/Kevinchamplin/wp-7-readiness-check');
 
 require_once WP7RC_DIR . 'includes/helpers.php';
 require_once WP7RC_DIR . 'includes/runner.php';
