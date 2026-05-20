@@ -13,7 +13,34 @@
     wirePerFixButtons();
     wireApplyAllButton();
     wireRestoreButtons();
+    wireRerunButton();
+    wirePrintButton();
   });
+
+  /* ============ Re-run audit (visible loading state) ============ */
+  function wireRerunButton() {
+    var btn = document.querySelector('[data-wp7rc-rerun]');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var spin = btn.querySelector('.wp7rc-btn__icon--spin');
+      if (spin) spin.hidden = false;
+      btn.disabled = true;
+      // Strip any URL hash so the page-top hero is visible after reload
+      var url = window.location.pathname + window.location.search;
+      window.location.replace(url);
+    });
+  }
+
+  /* ============ Print (proper event so no inline handler quirks) ============ */
+  function wirePrintButton() {
+    var btn = document.querySelector('[data-wp7rc-print]');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.print();
+    });
+  }
 
   /* ============ Score ring animation ============ */
   function animateScoreRing() {

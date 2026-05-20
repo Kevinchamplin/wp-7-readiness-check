@@ -150,9 +150,16 @@ $dash = (int) round($circ * ($score / 100));
             <span class="wp7rc-btn__icon" aria-hidden="true">⚡</span>
             Apply <?= count($available_fix_ids); ?> available fix<?= count($available_fix_ids) === 1 ? '' : 'es'; ?>
           </button>
+        <?php else: ?>
+          <span class="wp7rc-fix-empty" title="Re-run the audit to verify nothing has regressed.">
+            <span aria-hidden="true">✓</span> All available fixes applied
+          </span>
         <?php endif; ?>
-        <button class="wp7rc-btn wp7rc-btn--primary" onclick="window.location.reload();">Re-run audit</button>
-        <button class="wp7rc-btn wp7rc-btn--ghost" onclick="window.print();">Print / Save as PDF</button>
+        <button class="wp7rc-btn wp7rc-btn--primary" data-wp7rc-rerun="1">
+          <span class="wp7rc-btn__icon wp7rc-btn__icon--spin" aria-hidden="true" hidden>↻</span>
+          Re-run audit
+        </button>
+        <button class="wp7rc-btn wp7rc-btn--ghost" data-wp7rc-print="1">Print / Save as PDF</button>
       </div>
       <?php if ($has_any_fix): ?>
         <div class="wp7rc-fix-report" data-wp7rc-fix-report hidden>
