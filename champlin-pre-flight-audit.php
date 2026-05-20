@@ -21,18 +21,43 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// If the legacy pre-rename copy of this plugin is also active, it will define
+// WP7RC_VERSION first (alphabetical plugin load order puts champlin-pre-flight-audit/
+// before wp-7-readiness-check/ — but only if both folders exist, and the legacy main
+// file is also named wp-7-readiness-check.php). Bail out gracefully and surface a
+// notice asking the admin to deactivate the legacy copy so this one can take over.
+if (defined('WP7RC_VERSION')) {
+    add_action('admin_notices', static function (): void {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+        ?>
+        <div class="notice notice-error">
+            <p>
+                <strong>Champlin Pre-Flight Audit:</strong>
+                The pre-rename copy of this plugin (<em>WP 7 Readiness Check</em>) is also active.
+                Deactivate it from your Plugins page so the renamed version can load. Your audit
+                history and settings are preserved.
+            </p>
+        </div>
+        <?php
+    });
+    return;
+}
+
 define('WP7RC_VERSION', '1.0.6');
 define('WP7RC_FILE', __FILE__);
 define('WP7RC_DIR', plugin_dir_path(__FILE__));
 define('WP7RC_URL', plugin_dir_url(__FILE__));
 define('WP7RC_PRINTABLE_URL', 'https://champlinenterprises.com/wordpress-7-0-readiness-checklist.html?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
 define('WP7RC_ENGAGEMENT_URL', 'https://champlinenterprises.com/contact?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
-define('WP7RC_LANDING_URL',    'https://champlinenterprises.com/wp-7-readiness-plugin.html?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
+define('WP7RC_LANDING_URL',    'https://champlinenterprises.com/champlin-pre-flight-audit.html?utm_source=plugin&utm_medium=admin&utm_campaign=wp7rc');
 define('WP7RC_GITHUB_URL',     'https://github.com/Kevinchamplin/champlin-pre-flight-audit');
 
 require_once WP7RC_DIR . 'includes/helpers.php';
 require_once WP7RC_DIR . 'includes/runner.php';
 require_once WP7RC_DIR . 'includes/fixes.php';
+require_once WP7RC_DIR . 'includes/migration.php';
 
 /**
  * Auto-update from GitHub releases.
