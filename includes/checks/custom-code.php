@@ -35,7 +35,35 @@ function wp7rc_check_custom_code(): array
     if (is_multisite()) {
         $active = array_unique(array_merge($active, array_keys((array) get_site_option('active_sitewide_plugins', []))));
     }
-    $skip_vendor_slugs = ['woocommerce/', 'elementor/', 'jetpack/', 'akismet/', 'yoast-seo/', 'wordpress-seo/', 'wpforms-lite/', 'wp-7-readiness-check/'];
+    // Vendor plugins to skip — these are maintained by external teams who own
+    // their own WP 7.0 compatibility work. Flagging their code as if it were
+    // user-owned creates false positives and noise.
+    $skip_vendor_slugs = [
+        // Core ecosystem
+        'akismet/', 'jetpack/',
+        // Page builders
+        'elementor/', 'elementor-pro/', 'beaver-builder-lite-version/', 'divi/', 'bricks/', 'breakdance/', 'oxygen/',
+        // Commerce
+        'woocommerce/', 'wpforms-lite/', 'wpforms/', 'easy-digital-downloads/', 'memberpress/',
+        // SEO
+        'yoast-seo/', 'wordpress-seo/', 'seo-by-rank-math/', 'wp-seopress/', 'add-wpgraphql-seo/',
+        // ACF (Free + Pro)
+        'advanced-custom-fields/', 'advanced-custom-fields-pro/', 'acf-extended/', 'acf-extended-pro/',
+        // GraphQL / headless
+        'wp-graphql/', 'wpgraphql/', 'wpgraphql-acf/', 'wp-graphql-acf/', 'wp-gatsby/', 'wp-graphql-jwt-authentication/',
+        // Security / 2FA
+        'two-factor/', 'wp-2fa/', 'wordfence/', 'sucuri-scanner/',
+        // Cache
+        'wp-rocket/', 'w3-total-cache/', 'litespeed-cache/', 'wp-super-cache/', 'autoptimize/',
+        // Forms
+        'gravityforms/', 'ninja-forms/', 'contact-form-7/',
+        // Translation
+        'wpml-multilingual-cms/', 'polylang/', 'translatepress-multilingual/',
+        // Backup
+        'updraftplus/', 'backupbuddy/', 'backwpup/', 'duplicator/', 'all-in-one-wp-migration/',
+        // Our own
+        'wp-7-readiness-check/',
+    ];
     foreach ($active as $plugin_file) {
         $plugin_dir = dirname($plugin_file);
         if ($plugin_dir === '.' || $plugin_dir === '') {

@@ -4,7 +4,7 @@ Tags: wordpress 7, upgrade, readiness, audit, compatibility, dataviews, ai clien
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,10 @@ It covers the 30+ items that can be automated. The remaining 50 are human-judgme
 2. Per-finding view with status icon, technical detail, and remediation hint.
 
 == Changelog ==
+
+= 1.0.2 =
+* **Fix: Custom-code scan no longer false-positives on common vendor plugins.** The previous scope included Advanced Custom Fields, WPGraphQL, Two-Factor, page builders, and other widely-installed plugins that ship their own WordPress 7.0 compatibility updates. Flagging their internal code as if it were user-owned created noise. The vendor-skip list now covers 30+ common plugin slugs across page builders, SEO, ACF, GraphQL/headless, security, cache, forms, translation, and backup.
+* **Fix: Backup-plugin check now detects managed-host snapshot systems.** Previously warned even on Plesk / WP Engine / Kinsta / Pantheon / Pressable / SiteGround / Flywheel / GoDaddy Managed WordPress / cPanel / DreamHost installs where host-level backups are the standard. The check now detects 10 managed-host platforms and reports PASS with "host-level snapshots assumed" instead.
 
 = 1.0.1 =
 * **Fix:** OPcache detection no longer false-positives on hardened hosts. The previous check used `function_exists('opcache_get_status')`, which returns false on Plesk / CloudLinux / managed-WP servers that disable `opcache_get_status` via `disable_functions` for security. The new check uses `extension_loaded('Zend OPcache')` as the primary signal, falling back to detailed memory stats only if the introspection function is available. OPcache now correctly reports PASS on Plesk and CloudLinux hosts.

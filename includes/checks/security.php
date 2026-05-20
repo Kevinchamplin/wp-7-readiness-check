@@ -88,9 +88,23 @@ function wp7rc_check_security(): array
         }
     }
     if ($backup_detected !== []) {
-        $out[] = wp7rc_result('backup_plugin', 'security', 'Backup plugin', 'pass', implode(', ', $backup_detected), 'a backup plugin active', 'Backup plugin detected — verify your latest backup is recent and a restore has been tested in the last 30 days.');
+        $out[] = wp7rc_result('backup_plugin', 'security', 'Backup plugin', 'pass', implode(', ', $backup_detected), 'a backup plugin or host-level snapshots', 'Backup plugin detected — verify your latest backup is recent and a restore has been tested in the last 30 days.');
     } else {
-        $out[] = wp7rc_result('backup_plugin', 'security', 'Backup plugin', 'warn', 'none detected', 'a backup plugin or host-level snapshot', 'No well-known backup plugin is active. You may rely on host-level snapshots — verify before the WP 7.0 upgrade.', 'Either confirm host snapshots are running and tested, or install a backup plugin and take a snapshot before the upgrade.');
+        // No backup plugin — check for managed-host signals before warning.
+        $managed_host = wp7rc_detect_managed_host();
+        if ($managed_host !== null) {
+            $out[] = wp7rc_result(
+                'backup_plugin',
+                'security',
+                'Backup plugin or host-level snapshots',
+                'pass',
+                $managed_host . ' (host-level snapshots assumed)',
+                'a backup plugin or host-level snapshots',
+                sprintf('No WordPress backup plugin detected, but this site appears to be hosted on %s, which provides host-level snapshot backups. Verify your snapshot policy in the host control panel — confirm snapshots are running and restore has been tested in the last 30 days.', $managed_host)
+            );
+        } else {
+            $out[] = wp7rc_result('backup_plugin', 'security', 'Backup plugin', 'warn', 'none detected', 'a backup plugin or host-level snapshot', 'No well-known backup plugin is active and no managed-host snapshot system was detected. You may still rely on a backup process the plugin cannot see — verify before the WP 7.0 upgrade.', 'Either confirm a host-level snapshot system is running and tested, or install a backup plugin (UpdraftPlus, BackWPup, BlogVault) and take a snapshot before the upgrade.');
+        }
     }
 
     // AI Connectors policy — only relevant on post-7.0 sites; informational on pre-7.0
@@ -119,4 +133,54 @@ function wp7rc_check_security(): array
     }
 
     return $out;
+}
+
+/**
+ * Detect managed-host platforms that provide their own snapshot/backup systems.
+ * Returns the platform name (e.g. "Plesk", "WP Engine", "Kinsta") or null.
+ */
+function wp7rc_detect_managed_host(): ?string
+{
+    // Plesk — most common indicator is the /usr/local/psa/ install root + server software string
+    if (is_dir('/usr/local/psa') || strpos((string) ($_SERVER['SERVER_SOFTWARE'] ?? ''), 'Plesk') !== false) {
+        return 'Plesk';
+    }
+    // WP Engine
+    if (defined('WPE_APIKEY') || defined('IS_WPE') || defined('WPE_GOVERNOR_LOADED') || is_dir('/nas/content')) {
+        return 'WP Engine';
+    }
+    // Kinsta
+    if (defined('KINSTAMU_VERSION') || defined('KINSTA_CACHE_ZONE')) {
+        return 'Kinsta';
+    }
+    // Pantheon
+    if (defined('PANTHEON_ENVIRONMENT') || !empty($_SERVER['PANTHEON_ENVIRONMENT'] ?? '')) {
+        return 'Pantheon';
+    }
+    // Pressable
+    if (!empty($_SERVER['PRESSABLE_SITE_NAME'] ?? '') || defined('PRESSABLE_SITE_NAME')) {
+        return 'Pressable';
+    }
+    // SiteGround
+    if (defined('SiteGround_Optimizer\VERSION') || defined('SITEGROUND_OPTIMIZER_VERSION')) {
+        return 'SiteGround';
+    }
+    // Flywheel
+    if (defined('FLYWHEEL_PLUGIN_DIR') || strpos((string) ($_SERVER['SERVER_SOFTWARE'] ?? ''), 'Flywheel') !== false) {
+        return 'Flywheel';
+    }
+    // GoDaddy Managed WordPress
+    if (defined('GD_SYSTEM_PLUGIN_FILE') || class_exists('WPaaS\Plugin')) {
+        return 'GoDaddy Managed WordPress';
+    }
+    // cPanel (has its own backup system)
+    if (is_dir('/usr/local/cpanel')) {
+        return 'cPanel';
+    }
+    // DreamHost (DreamPress)
+    if (defined('DREAMHOST_PANEL_VERSION') || (isset($_SERVER['SERVER_SOFTWARE']) && strpos((string) $_SERVER['SERVER_SOFTWARE'], 'DreamHost') !== false)) {
+        return 'DreamHost';
+    }
+
+    return null;
 }
