@@ -1,18 +1,18 @@
-# WP 7 Readiness Check
+# Champlin Pre-Flight Audit
 
 > **A free WordPress plugin that audits your site for the WordPress 7.0 upgrade in 5 seconds.** 30+ automated checks. Visual readiness score. Four one-click autofixes. Plugin-directory snapshots before any update.
 
 [![License: GPL v2](https://img.shields.io/badge/License-GPLv2+-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Kevinchamplin/wp-7-readiness-check/releases/latest)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Kevinchamplin/champlin-pre-flight-audit/releases/latest)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-21759b.svg)](https://wordpress.org)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net)
-[![Download](https://img.shields.io/badge/download-47%20KB-22c55e.svg)](https://champlinenterprises.com/wp-7-readiness-check.zip)
+[![Download](https://img.shields.io/badge/download-47%20KB-22c55e.svg)](https://champlinenterprises.com/champlin-pre-flight-audit.zip)
 
-**[→ Download the plugin (champlinenterprises.com)](https://champlinenterprises.com/wp-7-readiness-check.zip)** · **[Landing page](https://champlinenterprises.com/wp-7-readiness-plugin.html)** · **[Printable 80-point checklist](https://champlinenterprises.com/wordpress-7-0-readiness-checklist.html)**
+**[→ Download the plugin (champlinenterprises.com)](https://champlinenterprises.com/champlin-pre-flight-audit.zip)** · **[Landing page](https://champlinenterprises.com/wp-7-readiness-plugin.html)** · **[Printable 80-point checklist](https://champlinenterprises.com/wordpress-7-0-readiness-checklist.html)**
 
 ---
 
-![WP 7 Readiness Check dashboard — visual readiness score, summary pills, action buttons](https://champlinenterprises.com/wp-7-readiness-plugin-dashboard.png)
+![Champlin Pre-Flight Audit dashboard — visual readiness score, summary pills, action buttons](https://champlinenterprises.com/wp-7-readiness-plugin-dashboard.png)
 
 ---
 
@@ -51,7 +51,7 @@ The feature most "autofix" tools skip. Before any plugin update runs, the existi
 
 ## Installation
 
-1. Download [`wp-7-readiness-check.zip`](https://champlinenterprises.com/wp-7-readiness-check.zip) (47 KB) or [the latest GitHub release](https://github.com/Kevinchamplin/wp-7-readiness-check/releases/latest).
+1. Download [`champlin-pre-flight-audit.zip`](https://champlinenterprises.com/champlin-pre-flight-audit.zip) (47 KB) or [the latest GitHub release](https://github.com/Kevinchamplin/champlin-pre-flight-audit/releases/latest).
 2. In WordPress admin, **Plugins → Add New → Upload Plugin** → choose the zip → **Install Now** → **Activate**.
 3. Navigate to **Tools → WP 7 Readiness**. Audit runs automatically.
 

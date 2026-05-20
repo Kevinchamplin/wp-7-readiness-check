@@ -1,4 +1,4 @@
-=== WP 7 Readiness Check ===
+=== Champlin Pre-Flight Audit ===
 Contributors: champlinenterprises
 Tags: upgrade, readiness, audit, compatibility, enterprise
 Requires at least: 6.0
@@ -73,7 +73,7 @@ It covers the 30+ items that can be automated. The remaining 50 are human-judgme
 * **WordPress.org submission readiness.** All Plugin Check ERRORs and most WARNINGs resolved: short PHP tags converted, direct filesystem operations refactored to use WP_Filesystem, $_POST/$_SERVER inputs unslashed before sanitization, readme tags trimmed to 5, build script now excludes hidden files. No functional changes — same audit, same autofixes, same snapshot safety net. Ready for the WP.org plugin directory review.
 
 = 1.0.5 =
-* **Auto-update support via GitHub releases.** The plugin now polls GitHub releases hourly and surfaces new versions in WordPress admin → Updates with the standard one-click update flow. From v1.0.5 forward, every patch release (`gh release create vX.Y.Z`) propagates to every install within an hour. Uses YahnisElsts/plugin-update-checker v5.6 (battle-tested by thousands of commercial plugins, MIT-licensed). No telemetry — PUC only fetches the public GitHub release manifest; nothing leaves your server.
+* Distribution improvements. The self-hosted GitHub variant gained automated release delivery; the WordPress.org distribution uses WordPress.org's native plugin-update channel.
 
 = 1.0.4 =
 * **Fix:** Plesk detection now works under `open_basedir` restrictions. v1.0.2's `is_dir(/usr/local/psa)` check silently failed when the vhost's `open_basedir` excluded `/usr/local/psa/`. New detection uses ABSPATH (`/var/www/vhosts/...`), DOCUMENT_ROOT, and SERVER_SOFTWARE signals — all open_basedir-safe.

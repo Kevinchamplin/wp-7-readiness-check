@@ -1,14 +1,14 @@
-# Contributing to WP 7 Readiness Check
+# Contributing to Champlin Pre-Flight Audit
 
 Pull requests welcome. This file describes what we look for in a good PR.
 
 ## Quick start
 
 ```bash
-git clone https://github.com/Kevinchamplin/wp-7-readiness-check.git
-cd wp-7-readiness-check
+git clone https://github.com/Kevinchamplin/champlin-pre-flight-audit.git
+cd champlin-pre-flight-audit
 # Symlink into a local WordPress install for testing
-ln -s "$(pwd)" /path/to/wp-content/plugins/wp-7-readiness-check
+ln -s "$(pwd)" /path/to/wp-content/plugins/champlin-pre-flight-audit
 ```
 
 Activate the plugin in your local WordPress, then navigate to **Tools → WP 7 Readiness**.
@@ -60,7 +60,7 @@ Bug fixes are always welcome. Include:
 - Capability + nonce checks at every AJAX endpoint
 - No `wp-config.php` edits, ever
 - No telemetry, no external data calls except to wordpress.org for plugin install via core API
-- All user-facing strings use the `wp-7-readiness-check` text domain (we'll add i18n in a future release)
+- All user-facing strings use the `champlin-pre-flight-audit` text domain (we'll add i18n in a future release)
 
 ## Testing
 

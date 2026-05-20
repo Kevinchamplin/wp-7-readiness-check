@@ -8,9 +8,9 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in WP 7 Readiness Check, please report it privately so we can fix it before public disclosure.
+If you discover a security vulnerability in Champlin Pre-Flight Audit, please report it privately so we can fix it before public disclosure.
 
-**Email:** hello@kevinchamplin.com (please put `[wp-7-readiness-check security]` in the subject line)
+**Email:** hello@kevinchamplin.com (please put `[champlin-pre-flight-audit security]` in the subject line)
 
 We will acknowledge receipt within 2 business days and aim to release a patch within 14 days for confirmed issues. Critical vulnerabilities (data exposure, privilege escalation, RCE) will be prioritized for same-day patches.
 
@@ -18,7 +18,7 @@ Please **do not** open a public GitHub issue for security vulnerabilities until 
 
 ## What's in scope
 
-- The plugin's PHP code in `wp-7-readiness-check.php`, `includes/`, and `assets/`
+- The plugin's PHP code in `champlin-pre-flight-audit.php`, `includes/`, and `assets/`
 - The AJAX endpoints registered by the plugin
 - The snapshot system at `wp-content/wp7rc-snapshots/`
 - The mu-plugins the plugin creates (e.g. `champlin-disallow-file-edit.php`)

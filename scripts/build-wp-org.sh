@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# Build WP.org-ready variant.
-# Strips PUC, renames to "WP 7.0 Compatibility Auditor" (slug: wp-7-compatibility-auditor)
-# to dodge trademark scrutiny, produces a ready-to-submit zip in dist/.
+# Build the WordPress.org distribution zip.
+#
+# Source repo is already named champlin-pre-flight-audit (slug, text domain,
+# filenames) — no renaming required. This script just strips the PUC auto-update
+# block + the bundled PUC vendor library (WP.org plugins must use WP.org's
+# native update channel, not third-party updaters) and produces a clean zip
+# ready to upload to WP.org.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD_DIR="$(mktemp -d)"
 SLUG="champlin-pre-flight-audit"
-NAME="Champlin Pre-Flight Audit"
 OUT_DIR="$REPO_ROOT/dist"
 
 mkdir -p "$OUT_DIR"
@@ -26,57 +29,40 @@ rsync -a \
   --exclude 'vendor/plugin-update-checker/' \
   "$REPO_ROOT/" "$BUILD_DIR/$SLUG/"
 
-echo "==> Renaming main file"
-mv "$BUILD_DIR/$SLUG/wp-7-readiness-check.php" "$BUILD_DIR/$SLUG/$SLUG.php"
-
-echo "==> Stripping PUC block + renaming plugin metadata"
+echo "==> Stripping PUC block from main file"
 python3 - <<PYEOF
 import re
 p = "$BUILD_DIR/$SLUG/$SLUG.php"
 src = open(p).read()
-pattern = re.compile(r"/\*\*\s*\n \* Auto-update from GitHub releases\..*?\n\}\s*\n", re.DOTALL)
-new = pattern.sub('', src, count=1)
-new = new.replace("Plugin Name:       WP 7 Readiness Check", "Plugin Name:       $NAME")
-new = new.replace("'wp-7-readiness-check'", "'$SLUG'")
-new = new.replace("tools_page_wp-7-readiness-check", "tools_page_$SLUG")
-new = new.replace("page=wp-7-readiness-check", "page=$SLUG")
-# Update the Text Domain header to match the new slug
-new = new.replace("Text Domain:       wp-7-readiness-check", "Text Domain:       $SLUG")
-new = new.replace(
-    "Plugin URI:        https://champlinenterprises.com/wordpress-7-0-readiness-checklist.html",
-    "Plugin URI:        https://champlinenterprises.com/wp-7-readiness-plugin.html"
+# Remove the entire PUC block (docblock + if (is_admin || DOING_CRON || WP_CLI) { … })
+pattern = re.compile(
+    r"/\*\*\s*\n \* Auto-update from GitHub releases\..*?\n\}\s*\n",
+    re.DOTALL,
 )
+new = pattern.sub('', src, count=1)
+# Also drop the WP7RC_GITHUB_URL define so the WP.org variant has no GitHub URL constant.
+new = re.sub(r"^define\('WP7RC_GITHUB_URL'.*\n", "", new, flags=re.MULTILINE)
 open(p, "w").write(new)
-print("  Main file rewritten")
+print("  PUC block + WP7RC_GITHUB_URL removed")
 PYEOF
 
-echo "==> Updating readme.txt"
+echo "==> Annotating readme.txt with the distribution note"
 python3 - <<PYEOF
-import re
 p = "$BUILD_DIR/$SLUG/readme.txt"
 src = open(p).read()
-src = src.replace("=== WP 7 Readiness Check ===", "=== $NAME ===")
-# WP.org build has no PUC — strip the v1.0.5 PUC changelog entry (replace with a generic distribution-channel note)
-puc_entry_pattern = re.compile(r"= 1\.0\.5 =.*?(?== 1\.0\.4 =)", re.DOTALL)
-src = puc_entry_pattern.sub(
-    "= 1.0.5 =\n* Initial WordPress.org release. WordPress.org's native plugin-update channel handles updates for this distribution.\n\n",
-    src
-)
 note = (
     "= About this distribution =\n\n"
     "This is the WordPress.org distribution of the plugin. A self-hosted variant is available at "
-    "https://github.com/Kevinchamplin/wp-7-readiness-check for users who prefer to install directly from GitHub. "
+    "https://github.com/Kevinchamplin/champlin-pre-flight-audit for users who prefer to install directly from GitHub. "
     "The audit logic, autofixes, and snapshot system are identical; only the update mechanism differs.\n\n"
 )
-src = src.replace("= What it checks =", note + "= What it checks =")
-open(p, "w").write(src)
-print("  readme.txt updated (v1.0.5 PUC entry stripped)")
+if "= About this distribution =" not in src and "= What it checks =" in src:
+    src = src.replace("= What it checks =", note + "= What it checks =")
+    open(p, "w").write(src)
+    print("  Distribution note injected")
+else:
+    print("  Distribution note already present (or readme structure unexpected)")
 PYEOF
-
-echo "==> Updating text-domain references"
-find "$BUILD_DIR/$SLUG" -type f -name "*.php" -exec \
-  sed -i.bak "s/'wp-7-readiness-check'/'$SLUG'/g" {} +
-find "$BUILD_DIR/$SLUG" -name "*.bak" -delete
 
 echo "==> Verifying no PUC refs remain"
 if grep -rl "plugin-update-checker\|PucFactory\|YahnisElsts" "$BUILD_DIR/$SLUG" 2>/dev/null; then
@@ -93,7 +79,7 @@ while IFS= read -r f; do
     ERR=1
   fi
 done < <(find "$BUILD_DIR/$SLUG" -name "*.php")
-[ $ERR -eq 0 ] && echo "  All clean"
+[ $ERR -eq 0 ] && echo "  All clean" || exit 1
 
 echo "==> Zipping"
 cd "$BUILD_DIR"

@@ -1,6 +1,6 @@
 <?php
 /**
- * WP 7 Readiness Check — uninstall cleanup.
+ * Champlin Pre-Flight Audit — uninstall cleanup.
  *
  * Runs when the user clicks "Delete" on the plugin row. Removes any options
  * we set. Currently the plugin is stateless (no options stored), so this is

@@ -320,7 +320,7 @@ $dash = (int) round($circ * ($score / 100));
 
     <p class="wp7rc-footer__meta">
       Audit generated <?php echo esc_html((string) ($results['generated_at'] ?? '')); ?> &middot;
-      WP 7 Readiness Check v<?php echo esc_html(WP7RC_VERSION); ?> &middot;
+      Champlin Pre-Flight Audit v<?php echo esc_html(WP7RC_VERSION); ?> &middot;
       <a href="https://champlinenterprises.com?utm_source=plugin&amp;utm_medium=admin&amp;utm_campaign=wp7rc" target="_blank" rel="noopener">Champlin Enterprises</a> &middot;
       <a href="<?php echo esc_url(WP7RC_LANDING_URL); ?>" target="_blank" rel="noopener">Plugin homepage</a>
     </p>

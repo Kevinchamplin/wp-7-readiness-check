@@ -62,7 +62,7 @@ function wp7rc_check_custom_code(): array
         // Backup
         'updraftplus/', 'backupbuddy/', 'backwpup/', 'duplicator/', 'all-in-one-wp-migration/',
         // Our own
-        'wp-7-readiness-check/',
+        'champlin-pre-flight-audit/',
     ];
     foreach ($active as $plugin_file) {
         $plugin_dir = dirname($plugin_file);
